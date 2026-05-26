@@ -1,47 +1,116 @@
-# Full Stack Test
-WPoets Full Stack Developer Test
+# WPoets Full Stack Test
 
-Hi Full-stacker!
+## Project summary
+This repository contains a small PHP frontend and admin application built to demonstrate:
+- a PHP + MySQL connection using PDO
+- CRUD operations for managing slide content
+- a public UI with topic tabs, slide content, and a synced image panel
+- a simple admin panel for creating, updating, and deleting slides
+- `.env` configuration support for database credentials
 
-Great that you're interested in this exercise! Thanks a lot for making it. The exercise consits of an assignment. It is related to the WPoets working ways. Good luck and we are looking forward to hearing from you soon!
+## What is included
+- `index.php` — public slider page showing a topic tab list, slide cards, and a connected image
+- `admin.php` — slide management page with create, edit, and delete operations
+- `src/Database.php` — database connection class using PDO
+- `src/SlideRepository.php` — repository layer for slide CRUD operations
+- `config.php` — environment loader and database configuration
+- `.env.example` — example database environment values
+- `.env` — local environment values for this project
+- `.gitignore` — excludes `.env` from version control
+- `setup.sql` — MySQL schema and seeded slide data
+- `assets/` — frontend CSS and JavaScript used by `index.php` and `admin.php`
+- `Answers to technical questions.md` — technical answers for the coding test
 
-To complete these assignment you need to fork this repo. When you're done you can push your changes to your own repo (and let us know where to find it ofcourse).
+## Requirements
+- PHP 8 or newer with PDO enabled
+- MySQL server
+- A local browser
 
-<h2>Task</h2>
-<ul>
-  <li>Create a CRUD functionality using PHP, MySQL.</li>
-	<li>Fetch the data to display the section that matches the given design using HTML5, CSS3, jQuery, Bootstrap.</li>
-</ul>
+## Setup instructions
+1. Copy `.env.example` to `.env` if you want custom local values.
+   - The repository already includes `.env` for convenience, but do not commit your own credentials.
+2. Create the database and initial table data.
+   - If you have direct MySQL access, run:
+     ```bash
+     mysql -u root -p < setup.sql
+     ```
+   - If you are using Apache with phpMyAdmin or another GUI, import `setup.sql` there instead.
+3. Confirm `.env` matches your MySQL settings:
+   ```dotenv
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=wpoets_test
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-<h2>Design</h2>
+## Running the project
+### Option 1: Apache
+1. Place the project inside your Apache web root, for example:
+   - macOS: `/Library/WebServer/Documents/full-stack-test`
+   - MAMP: `/Applications/MAMP/htdocs/full-stack-test`
+2. Make sure Apache is running and PHP is enabled.
+3. Open the project in your browser at the correct Apache URL, for example:
+   - `http://localhost/full-stack-test/index.php`
+   - `http://localhost/full-stack-test/admin.php`
 
-<h5>In Web view</h5>
-<ul>
-  <li>Column 1 is tabs. Each tab is a seperate slider.</li>
-	<li>Clicking on the tab will change the slider in Column 2.</li>
-	<li>
-		Column 2 is a slider connected with column 3.
-		<ul>
-			<li>Which means when the slide in column 2 changes, the image in column 3 will change with it.</li>
-			<li>Controls are attached to column 2 only.</li>
-		</ul>
-	</li>
-	<li>Image in column 3 is a 1:1 image.</li>
-</ul>
+### Option 2: Built-in PHP server
+From the repository root, run:
+```bash
+php -S localhost:8000
+```
+Then open:
+- `http://localhost:8000/index.php`
+- `http://localhost:8000/admin.php`
 
-<h5>In Mobile view</h5>
-<ul>
-  <li>Column 1 changes to accordion.</li>
-  <li>Column 2 is a slider with images from column 3 as background images.</li>
-</ul>
+### How `.env` is used
+- `config.php` reads `.env` and loads the database credentials into the app
+- `src/Database.php` uses those values to create the PDO connection
+- If Apache is configured and PHP works there, this project uses the same MySQL server as long as `.env` is correct
 
-<strong>Note: Please refer to the files directory for design files, relevant icons/images and styleguide.</strong>
+### Note on `php artisan serve`
+- `php artisan serve` is a Laravel command
+- It is not required for this project
+- For this PHP app, use Apache or PHP's built-in server instead
 
-<h2>Technical questions</h2>
+## Why the MySQL setup is included
+The MySQL setup is included so the app has a real backend data source:
+- it shows how PHP connects to MySQL using PDO
+- it supports persistent slide content instead of hard-coded data
+- it demonstrates a basic repository pattern for database access
 
-Please answer the following questions in a markdown file called <code>Answers to technical questions.md</code>
-<ul>
-  <li>How long did you spend on the coding test? What would you add to your solution if you had more time? If you didn't spend much time on the coding test then use this as an opportunity to explain what you would add.</li>
-	<li>How would you track down a performance issue in production? Have you ever had to do this?</li>
-	<li>Please describe yourself using JSON.</li>
-</ul>
+This is not just UI work: it shows the app can read and write slide records from a database.
+
+## How to verify MySQL connection
+1. Start the PHP server.
+2. Open `index.php` in the browser.
+3. If the slider loads data and displays slides, the MySQL connection is working.
+
+Additional verification:
+- Open `admin.php` and confirm existing slides appear.
+- Create or edit a slide and save it.
+- If the change persists and appears in the public view, the database connection is working.
+
+If you see an error like `Table 'wpoets_test.slides' doesn't exist`, run the database initialization script again:
+```bash
+mysql -u root -p < setup.sql
+```
+If the database still does not exist, create it first or ensure `.env` contains the correct `DB_DATABASE` value.
+
+If the database cannot connect, the app will fail when creating the PDO connection inside `src/Database.php`.
+
+## Notes
+- `.env` is excluded by `.gitignore` so local credentials are not pushed
+- `config.php` reads `.env` and uses those values in `src/Database.php`
+- `setup.sql` is included to make it easy to initialize the database for this test
+
+## Which files to read
+- `README.md` contains setup, run instructions, and project details
+- `Answers to technical questions.md` contains the coding test answers
+
+## Technical questions
+Answer these in `Answers to technical questions.md`:
+- How long did you spend on the coding test? What would you add if you had more time?
+- How would you track down a performance issue in production?
+- Please describe yourself using JSON.

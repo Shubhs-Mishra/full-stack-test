@@ -1,0 +1,512 @@
+/* ============================================================
+   DelphianLogic Slider – Pixel-Perfect Rewrite
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   Page background
+   ---------------------------------------------------------- */
+body {
+    background-color: #1a2a4a;
+}
+
+/* ----------------------------------------------------------
+   Outer slider container – no gaps, no radius, fixed height
+   ---------------------------------------------------------- */
+.slider-outer {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    height: 440px;          /* wide & short */
+    overflow: hidden;
+    border-radius: 0;
+}
+
+/* ----------------------------------------------------------
+   COL 1 – Topics panel
+   ---------------------------------------------------------- */
+
+.topics-panel {
+    width: 27%;
+    flex-shrink: 0;
+    background: #efefef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 34px 18px;
+    position: relative;
+    z-index: 2;
+}
+
+/* nav wrapper */
+.topics-panel .nav.flex-column {
+    width: 100%;
+    gap: 22px;
+    padding: 0;
+    margin: 0;
+}
+
+/* ----------------------------------------------------------
+   EACH CARD
+   ---------------------------------------------------------- */
+
+.topic-tab {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    width: 100%;
+    min-height: 102px;
+    padding: 0 28px;
+    background: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px !important;
+    text-decoration: none;
+    color: #2d3748;
+    transition: all 0.18s ease;
+    margin: 0 !important;
+}
+
+/* remove previous divider logic */
+.topic-tab:last-child {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+/* ----------------------------------------------------------
+   HOVER
+   ---------------------------------------------------------- */
+
+.topic-tab:hover:not(.active) {
+    background: #ffffff;
+    color: #111827;
+}
+
+/* ----------------------------------------------------------
+   ACTIVE CARD
+   ---------------------------------------------------------- */
+
+.topic-tab.active {
+    background: #ffffff;
+    color: #111827;
+    box-shadow:
+        0 6px 18px rgba(0,0,0,0.12),
+        0 2px 6px rgba(0,0,0,0.08);
+    z-index: 5;
+}
+
+/* ----------------------------------------------------------
+   ARROW – desktop only (right-pointing into slider panel)
+   ---------------------------------------------------------- */
+
+.topic-tab.active::after {
+    content: '';
+    position: absolute;
+    right: -22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+
+    /* MIRRORED TRIANGLE */
+    border-right: 14px solid #64b4c8;
+    z-index: 10;
+}
+
+/* ----------------------------------------------------------
+   ICON
+   ---------------------------------------------------------- */
+
+.topic-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+/* ----------------------------------------------------------
+   LABEL
+   ---------------------------------------------------------- */
+
+.topic-tab span {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: inherit;
+}
+
+/* Hide toggle-btn on desktop */
+.toggle-btn {
+    display: none;
+}
+
+/* ----------------------------------------------------------
+   COL 2 – Slider panel  (~37 %)
+   ---------------------------------------------------------- */
+.slider-panel {
+    width: 37%;
+    flex-shrink: 0;
+    background: #64b4c8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2.5rem 2.5rem 1.75rem 2.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* hide the original Bootstrap header row (prev/next buttons, title) */
+.slider-header {
+    display: none !important;
+}
+
+.slider-items {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+}
+
+/* individual slide cards */
+.slider-card {
+    display: none;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 0;
+    border-radius: 0 !important;
+    background: transparent;
+    box-shadow: none;
+    min-height: unset;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.slider-card.active {
+    display: flex;
+}
+
+/* Badge above the title – SQUARE corners */
+.slider-badge {
+    line-height: 16px;
+    display: inline-block;
+    width: fit-content;
+    background: #3686915e;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 0.2rem 0.5rem;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.slider-card h3 {
+    font-size: 1.65rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #fff;
+    margin: 0;
+    width: 345px;
+}
+
+.slider-card p {
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* hide the "Slide X of Y" text */
+.slider-card .slide-counter {
+    display: none;
+}
+
+/* Learn More link */
+.learn-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    margin-top: 0.25rem;
+}
+
+.learn-more-link:hover { opacity: 0.8; }
+
+/* Admin panel action buttons */
+.action-cell {
+    white-space: nowrap;
+}
+
+.admin-action-buttons {
+    align-items: center;
+}
+
+.admin-action-buttons .btn {
+    white-space: nowrap;
+}
+
+/* Dot indicators at the bottom */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.75rem;
+}
+
+.slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.slider-dot.active {
+    background: #fff;
+}
+
+/* hide old prev/next */
+#previous-slide,
+#next-slide {
+    display: none !important;
+}
+
+/* ----------------------------------------------------------
+   COL 3 – Image panel  (~37 %)
+   ---------------------------------------------------------- */
+.image-panel {
+    width: 37%;
+    flex: 0 0 37%;
+    min-width: 0;
+    padding: 0;
+}
+
+.image-frame {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 0 !important;
+    overflow: hidden;
+    background: #1a2744;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: unset;
+}
+
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.placeholder {
+    padding: 2rem;
+    text-align: center;
+    color: #9ca3af;
+}
+
+/* ----------------------------------------------------------
+   Page hero header
+   ---------------------------------------------------------- */
+.page-hero {
+    text-align: center;
+    padding: 2.5rem 0 1.75rem;
+    color: #fff;
+}
+
+.page-hero h1 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.4rem;
+}
+
+.page-hero p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* ----------------------------------------------------------
+   Responsive – TABLET  768 px – 991 px
+   Simple stacked layout, no accordion
+   ---------------------------------------------------------- */
+@media (min-width: 768px) and (max-width: 991px) {
+
+    .slider-outer {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .topics-panel,
+    .slider-panel,
+    .image-panel {
+        width: 100%;
+    }
+
+    .topics-panel {
+        justify-content: flex-start;
+    }
+
+    .topic-tab {
+        height: auto;
+        padding: 1rem 1.5rem;
+    }
+
+    .topic-tab.active::after {
+        display: none;
+    }
+
+    .slider-card h3 {
+        font-size: 1.3rem;
+        width: 100%;
+    }
+
+    .image-frame {
+        min-height: 250px;
+    }
+}
+
+/* ----------------------------------------------------------
+   Responsive – MOBILE  ≤ 767 px
+   Accordion layout: each topic tab expands inline
+   ---------------------------------------------------------- */
+@media (max-width: 767px) {
+
+    /* Outer container: vertical, full-width, no fixed height */
+    .slider-outer {
+        flex-direction: column;
+        height: auto;
+        max-width: 100%;
+        overflow: visible;
+    }
+
+    /* Hide the desktop slider-panel and image-panel columns —
+       their content is cloned into accordion bodies by JS     */
+    .slider-panel,
+    .image-panel {
+        display: none !important;
+    }
+
+    /* Topics panel: full-width accordion shell, transparent bg */
+    .topics-panel {
+        width: 100%;
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px;
+        justify-content: flex-start;
+    }
+
+    .topics-panel .nav.flex-column {
+        gap: 10px;
+        width: 100%;
+    }
+
+    /* Each topic tab card */
+    .topic-tab {
+        width: 100%;
+        min-height: 80px;
+        height: auto;
+        padding: 0 20px;
+        background: #ffffff;
+        border-radius: 6px !important;
+        gap: 16px;
+    }
+
+    /* Hide desktop right-pointing arrow on mobile */
+    .topic-tab.active::after {
+        display: none !important;
+    }
+
+    /* Show toggle-btn on mobile */
+    .toggle-btn {
+        display: flex;
+        margin-left: auto;
+        width: 0px;
+        height: 0px;
+        border-radius: 50%;
+        background: #ffffff;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        padding: 0;
+    }
+
+    .toggle-btn .toggle-icon {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
+    /* ── Accordion body ───────────────────────────────────────
+       Injected by JS right after each .topic-tab.
+       Full bleed teal block with upward triangle at the top.
+    --------------------------------------------------------- */
+    .accordion-slider-body {
+        position: relative;
+        width: 100%;
+        background: #64b4c8;
+        padding: 30px 20px 28px;
+        overflow: visible;
+        /* Margin so the triangle visually connects to the tab above */
+        margin-top: 8px;
+    }
+
+    /* Upward-pointing triangle at the top of the accordion body
+       Points up into the active topic-tab card above it         */
+    .accordion-slider-body::before {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        border-bottom: 16px solid #64b4c8;
+    }
+
+    /* Re-show the cloned slider panel inside the accordion body */
+    .accordion-slider-body .slider-panel {
+        display: flex !important;
+        background: transparent;
+        width: 100%;
+        padding: 0;
+        position: static;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Slide cards inside accordion */
+    .accordion-slider-body .slider-card {
+        color: #fff;
+        text-align: center;
+        align-items: center;
+    }
+
+    .accordion-slider-body .slider-card h3 {
+        font-size: 1.35rem;
+        width: 100%;
+    }
+
+    /* Dots inside accordion */
+    .accordion-slider-body .slider-dots {
+        margin-top: 1.5rem;
+    }
+}
